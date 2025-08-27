@@ -50,3 +50,28 @@ int main() {
 
     return 0;
 }
+
+void adicionarItem() {
+    if (totalItens >= MAX_ITENS) {
+        printf("Inventario cheio! Nao e possivel adicionar mais itens.\n");
+        return;
+    }
+
+    printf("\n--- Adicionar Item ---\n");
+
+    printf("Nome do item: ");
+    fgets(inventario[totalItens].nome, sizeof(inventario[totalItens].nome), stdin);
+    inventario[totalItens].nome[strcspn(inventario[totalItens].nome, "\n")] = 0; // Remove a quebra de linha
+
+    printf("Tipo do item (ex: Arma, Curativo): ");
+    fgets(inventario[totalItens].tipo, sizeof(inventario[totalItens].tipo), stdin);
+    inventario[totalItens].tipo[strcspn(inventario[totalItens].tipo, "\n")] = 0;
+
+    printf("Quantidade: ");
+    scanf("%d", &inventario[totalItens].quantidade);
+    limparBufferEntrada();
+
+    totalItens++;
+    printf("Item adicionado com sucesso!\n");
+}
+
