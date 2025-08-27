@@ -15,6 +15,7 @@ int totalItens = 0;
 void adicionarItem();
 void removerItem();
 void listarItens();
+void buscarItem();
 void limparBufferEntrada();
 
 int main() {
