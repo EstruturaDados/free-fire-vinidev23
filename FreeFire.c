@@ -57,9 +57,15 @@ int main() {
                 listarItens();
                 break;
             case 4:
-                buscarItem();
+                buscarItemSequencial();
                 break;
             case 5:
+                ordenarInventario();
+                break;
+            case 6:
+                buscarItemBinaria();
+                break;
+            case 7:
                 printf("Fechando o sistema da mochila. Ate a proxima!\n");
                 break;
             default:
