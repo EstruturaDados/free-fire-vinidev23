@@ -43,6 +43,9 @@ int main() {
                 listarItens();
                 break;
             case 4:
+                buscarItem();
+                break;
+            case 5:
                 printf("Fechando o sistema da mochila. Ate a proxima!\n");
                 break;
             default:
