@@ -1,7 +1,14 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define MAX_ITENS 10
+
+typedef enum {
+    NOME,
+    TIPO,
+    PRIORIDADE
+} CriterioOrdenacao;
 
 typedef struct {
     char nome[50];
