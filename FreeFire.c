@@ -110,6 +110,7 @@ void adicionarItem() {
 }
 
 void removerItem() {
+    void removerItem() {
     if (totalItens == 0) {
         printf("O inventario esta vazio. Nao ha itens para remover.\n");
         return;
@@ -129,6 +130,7 @@ void removerItem() {
             }
             totalItens--;
             encontrado = 1;
+            inventarioOrdenadoPorNome = false;
             printf("Item '%s' removido com sucesso.\n", nomeRemover);
             break;
         }
@@ -146,27 +148,28 @@ void listarItens() {
     }
 
     printf("\n--- Itens no Inventario (%d/%d) ---\n", totalItens, MAX_ITENS);
-    printf("--------------------------------------------------\n");
-    printf("| %-20s | %-15s | %-10s |\n", "Nome", "Tipo", "Quantidade");
-    printf("--------------------------------------------------\n");
+    printf("--------------------------------------------------------------------\n");
+    printf("| %-20s | %-15s | %-10s | %-10s |\n", "Nome", "Tipo", "Quantidade", "Prioridade");
+    printf("--------------------------------------------------------------------\n");
 
     for (int i = 0; i < totalItens; i++) {
-        printf("| %-20s | %-15s | %-10d |\n",
+        printf("| %-20s | %-15s | %-10d | %-10d |\n",
                inventario[i].nome,
                inventario[i].tipo,
-               inventario[i].quantidade);
+               inventario[i].quantidade,
+               inventario[i].prioridade);
     }
 
-    printf("--------------------------------------------------\n");
+    printf("--------------------------------------------------------------------\n");
 }
 
-void buscarItem() {
+void buscarItemSequencial() {
     if (totalItens == 0) {
         printf("\nO inventario esta vazio. Nao ha itens para buscar.\n");
         return;
     }
 
-    printf("\n--- Buscar Item ---\n");
+    printf("\n--- Buscar Item (Sequencial) ---\n");
     char nomeBusca[50];
     printf("Digite o nome do item que deseja buscar: ");
     fgets(nomeBusca, sizeof(nomeBusca), stdin);
@@ -180,9 +183,133 @@ void buscarItem() {
             printf("Nome: %s\n", inventario[i].nome);
             printf("Tipo: %s\n", inventario[i].tipo);
             printf("Quantidade: %d\n", inventario[i].quantidade);
+            printf("Prioridade: %d\n", inventario[i].prioridade);
             printf("----------------------------------\n");
             encontrado = 1;
             break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("\nItem '%s' nao encontrado no inventario.\n", nomeBusca);
+    }
+}
+
+void ordenarInventario() {
+    if (totalItens <= 1) {
+        printf("\nNao ha itens suficientes para ordenar.\n");
+        return;
+    }
+
+    int escolhaCriterio;
+    printf("\n--- Ordenar Inventario ---\n");
+    printf("Escolha o criterio de ordenacao:\n");
+    printf("1. Nome (A-Z)\n");
+    printf("2. Tipo (A-Z)\n");
+    printf("3. Prioridade (1-5)\n");
+    printf("Escolha: ");
+    scanf("%d", &escolhaCriterio);
+    limparBufferEntrada();
+
+    CriterioOrdenacao criterio;
+    switch (escolhaCriterio) {
+        case 1:
+            criterio = NOME;
+            break;
+        case 2:
+            criterio = TIPO;
+            break;
+        case 3:
+            criterio = PRIORIDADE;
+            break;
+        default:
+            printf("Criterio invalido. Abortando ordenacao.\n");
+            return;
+    }
+
+    long long comparacoes = 0;
+
+    for (int i = 1; i < totalItens; i++) {
+        Item chave = inventario[i];
+        int j = i - 1;
+
+        while (j >= 0) {
+            bool condicaoTroca = false;
+            comparacoes++;
+
+            if (criterio == NOME) {
+                if (strcmp(inventario[j].nome, chave.nome) > 0) {
+                    condicaoTroca = true;
+                }
+            } else if (criterio == TIPO) {
+                if (strcmp(inventario[j].tipo, chave.tipo) > 0) {
+                    condicaoTroca = true;
+                }
+            } else if (criterio == PRIORIDADE) {
+                if (inventario[j].prioridade > chave.prioridade) {
+                    condicaoTroca = true;
+                }
+            }
+
+            if (condicaoTroca) {
+                inventario[j + 1] = inventario[j];
+                j = j - 1;
+            } else {
+                break;
+            }
+        }
+        inventario[j + 1] = chave;
+    }
+    
+    printf("\nInventario ordenado com sucesso!\n");
+    printf("Total de comparacoes realizadas: %lld\n", comparacoes);
+
+    if (criterio == NOME) {
+        inventarioOrdenadoPorNome = true;
+    } else {
+        inventarioOrdenadoPorNome = false;
+    }
+}
+
+void buscarItemBinaria() {
+    if (!inventarioOrdenadoPorNome) {
+        printf("\nErro: O inventario precisa estar ordenado por nome para usar a Busca Binaria.\n");
+        printf("Por favor, ordene por Nome (opcao 5) antes de tentar a busca.\n");
+        return;
+    }
+    if (totalItens == 0) {
+        printf("\nO inventario esta vazio. Nao ha itens para buscar.\n");
+        return;
+    }
+
+    printf("\n--- Buscar Item (Binaria) ---\n");
+    char nomeBusca[50];
+    printf("Digite o nome do item que deseja buscar: ");
+    fgets(nomeBusca, sizeof(nomeBusca), stdin);
+    nomeBusca[strcspn(nomeBusca, "\n")] = 0;
+
+    int inicio = 0;
+    int fim = totalItens - 1;
+    int encontrado = 0;
+    
+    while (inicio <= fim) {
+        int meio = inicio + (fim - inicio) / 2;
+        int comparacao = strcmp(inventario[meio].nome, nomeBusca);
+
+        if (comparacao == 0) {
+            printf("\nItem encontrado!\n");
+            printf("----------------------------------\n");
+            printf("Nome: %s\n", inventario[meio].nome);
+            printf("Tipo: %s\n", inventario[meio].tipo);
+            printf("Quantidade: %d\n", inventario[meio].quantidade);
+            printf("Prioridade: %d\n", inventario[meio].prioridade);
+            printf("----------------------------------\n");
+            encontrado = 1;
+            break;
+        } else if (comparacao < 0) {
+            inicio = meio + 1;
+        } else {
+            fim = meio - 1;
         }
     }
 
