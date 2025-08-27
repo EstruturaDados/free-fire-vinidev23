@@ -75,3 +75,33 @@ void adicionarItem() {
     printf("Item adicionado com sucesso!\n");
 }
 
+void removerItem() {
+    if (totalItens == 0) {
+        printf("O inventario esta vazio. Nao ha itens para remover.\n");
+        return;
+    }
+
+    printf("\n--- Remover Item ---\n");
+    char nomeRemover[50];
+    printf("Digite o nome do item a ser removido: ");
+    fgets(nomeRemover, sizeof(nomeRemover), stdin);
+    nomeRemover[strcspn(nomeRemover, "\n")] = 0;
+
+    int encontrado = 0;
+    for (int i = 0; i < totalItens; i++) {
+        if (strcmp(inventario[i].nome, nomeRemover) == 0) {
+            // Item encontrado, agora o removemos
+            for (int j = i; j < totalItens - 1; j++) {
+                inventario[j] = inventario[j+1];
+            }
+            totalItens--;
+            encontrado = 1;
+            printf("Item '%s' removido com sucesso.\n", nomeRemover);
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("Item '%s' nao encontrado no inventario.\n", nomeRemover);
+    }
+}
