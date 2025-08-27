@@ -71,13 +71,13 @@ int main() {
             default:
                 printf("Opcao invalida. Tente novamente.\n");
         }
-    } while (opcao != 4);
+    } while (opcao != 7);
 
     return 0;
 }
 
 void adicionarItem() {
-    if (totalItens >= MAX_ITENS) {
+     if (totalItens >= MAX_ITENS) {
         printf("Inventario cheio! Nao e possivel adicionar mais itens.\n");
         return;
     }
@@ -94,9 +94,18 @@ void adicionarItem() {
 
     printf("Quantidade: ");
     scanf("%d", &inventario[totalItens].quantidade);
-    limparBufferEntrada();
 
+    do {
+        printf("Prioridade (1 a 5): ");
+        scanf("%d", &inventario[totalItens].prioridade);
+        if (inventario[totalItens].prioridade < 1 || inventario[totalItens].prioridade > 5) {
+            printf("Prioridade invalida. Escolha um valor entre 1 e 5.\n");
+        }
+    } while (inventario[totalItens].prioridade < 1 || inventario[totalItens].prioridade > 5);
+
+    limparBufferEntrada();
     totalItens++;
+    inventarioOrdenadoPorNome = false;
     printf("Item adicionado com sucesso!\n");
 }
 
