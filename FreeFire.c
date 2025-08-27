@@ -95,7 +95,6 @@ void removerItem() {
     int encontrado = 0;
     for (int i = 0; i < totalItens; i++) {
         if (strcmp(inventario[i].nome, nomeRemover) == 0) {
-            // Item encontrado, agora o removemos
             for (int j = i; j < totalItens - 1; j++) {
                 inventario[j] = inventario[j+1];
             }
@@ -130,6 +129,37 @@ void listarItens() {
     }
 
     printf("--------------------------------------------------\n");
+}
+
+void buscarItem() {
+    if (totalItens == 0) {
+        printf("\nO inventario esta vazio. Nao ha itens para buscar.\n");
+        return;
+    }
+
+    printf("\n--- Buscar Item ---\n");
+    char nomeBusca[50];
+    printf("Digite o nome do item que deseja buscar: ");
+    fgets(nomeBusca, sizeof(nomeBusca), stdin);
+    nomeBusca[strcspn(nomeBusca, "\n")] = 0;
+
+    int encontrado = 0;
+    for (int i = 0; i < totalItens; i++) {
+        if (strcmp(inventario[i].nome, nomeBusca) == 0) {
+            printf("\nItem encontrado!\n");
+            printf("----------------------------------\n");
+            printf("Nome: %s\n", inventario[i].nome);
+            printf("Tipo: %s\n", inventario[i].tipo);
+            printf("Quantidade: %d\n", inventario[i].quantidade);
+            printf("----------------------------------\n");
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("\nItem '%s' nao encontrado no inventario.\n", nomeBusca);
+    }
 }
 
 void limparBufferEntrada() {
