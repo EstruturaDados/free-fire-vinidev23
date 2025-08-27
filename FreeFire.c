@@ -61,7 +61,7 @@ void adicionarItem() {
 
     printf("Nome do item: ");
     fgets(inventario[totalItens].nome, sizeof(inventario[totalItens].nome), stdin);
-    inventario[totalItens].nome[strcspn(inventario[totalItens].nome, "\n")] = 0; // Remove a quebra de linha
+    inventario[totalItens].nome[strcspn(inventario[totalItens].nome, "\n")] = 0;
 
     printf("Tipo do item (ex: Arma, Curativo): ");
     fgets(inventario[totalItens].tipo, sizeof(inventario[totalItens].tipo), stdin);
@@ -104,4 +104,30 @@ void removerItem() {
     if (!encontrado) {
         printf("Item '%s' nao encontrado no inventario.\n", nomeRemover);
     }
+}
+
+void listarItens() {
+    if (totalItens == 0) {
+        printf("\nO inventario esta vazio. Adicione itens para visualiza-los.\n");
+        return;
+    }
+
+    printf("\n--- Itens no Inventario (%d/%d) ---\n", totalItens, MAX_ITENS);
+    printf("--------------------------------------------------\n");
+    printf("| %-20s | %-15s | %-10s |\n", "Nome", "Tipo", "Quantidade");
+    printf("--------------------------------------------------\n");
+
+    for (int i = 0; i < totalItens; i++) {
+        printf("| %-20s | %-15s | %-10d |\n",
+               inventario[i].nome,
+               inventario[i].tipo,
+               inventario[i].quantidade);
+    }
+
+    printf("--------------------------------------------------\n");
+}
+
+void limparBufferEntrada() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
 }
