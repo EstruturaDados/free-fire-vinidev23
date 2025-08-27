@@ -24,8 +24,11 @@ bool inventarioOrdenadoPorNome = false;
 void adicionarItem();
 void removerItem();
 void listarItens();
-void buscarItem();
+void buscarItemSequencial();
+void ordenarInventario();
+void buscarItemBinaria();
 void limparBufferEntrada();
+void trocarItens(Item* a, Item* b);
 
 int main() {
     int opcao;
@@ -35,8 +38,10 @@ int main() {
         printf("1. Adicionar item\n");
         printf("2. Remover item\n");
         printf("3. Listar itens\n");
-        printf("4. Buscar item por nome\n");
-        printf("5. Sair\n");
+        printf("4. Buscar item (Busca Sequencial)\n");
+        printf("5. Ordenar inventario\n");
+        printf("6. Buscar item (Busca Binaria)\n");
+        printf("7. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         limparBufferEntrada();
