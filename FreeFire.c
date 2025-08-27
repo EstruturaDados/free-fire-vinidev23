@@ -26,7 +26,8 @@ int main() {
         printf("1. Adicionar item\n");
         printf("2. Remover item\n");
         printf("3. Listar itens\n");
-        printf("4. Sair\n");
+        printf("4. Buscar item por nome\n");
+        printf("5. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         limparBufferEntrada();
