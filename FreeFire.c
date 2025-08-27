@@ -14,10 +14,12 @@ typedef struct {
     char nome[50];
     char tipo[50];
     int quantidade;
+    int prioridade;
 } Item;
 
 Item inventario[MAX_ITENS];
 int totalItens = 0;
+bool inventarioOrdenadoPorNome = false;
 
 void adicionarItem();
 void removerItem();
